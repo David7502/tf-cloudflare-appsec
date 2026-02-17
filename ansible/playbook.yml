@@ -1,0 +1,23 @@
+- hosts: web
+  become: yes
+
+  tasks:
+    - name: Mettre à jour apt
+      apt:
+        update_cache: yes
+
+    - name: Installer nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Démarrer nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Page personnalisée
+      copy:
+        content: "<h1>Deployed with Terraform + Ansible 🚀</h1>"
+        dest: /var/www/html/index.html
