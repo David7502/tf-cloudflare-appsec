@@ -1,0 +1,18 @@
+# Variables pour Cloudflared
+# À modifier selon vos tunnels Cloudflare
+
+# Pour VM1 (web)
+cloudflared_tunnel_id: "votre-tunnel-id-vm1"
+cloudflared_hostname: "scroll.dgcf.ovh"
+cloudflared_credentials:
+  AccountTag: "votre-account-tag"
+  TunnelID: "votre-tunnel-id-vm1"
+  TunnelSecret: "votre-tunnel-secret-vm1"
+
+# Pour VM2 (web2)
+cloudflared_tunnel_id2: "votre-tunnel-id-vm2"
+cloudflared_hostname2: "scroll2.dgcf.ovh"
+cloudflared_credentials2:
+  AccountTag: "votre-account-tag"
+  TunnelID: "votre-tunnel-id-vm2"
+  TunnelSecret: "votre-tunnel-secret-vm2"
