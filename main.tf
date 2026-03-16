@@ -12,6 +12,13 @@ resource "google_compute_subnetwork" "subnet" {
   network       = google_compute_network.vpc.id
 }
 
+resource "google_compute_subnetwork" "subnet2" {
+  name          = "my-subnet-2"
+  ip_cidr_range = "10.1.0.0/24"
+  region        = var.region2
+  network       = google_compute_network.vpc.id
+}
+
 # Règle de pare-feu : autoriser SSH (port 22)
 resource "google_compute_firewall" "allow_ssh" {
   name    = "allow-ssh"
@@ -78,7 +85,7 @@ resource "google_compute_instance" "vm2" {
   # Interface réseau avec IP externe
   network_interface {
     network    = google_compute_network.vpc.id
-    subnetwork = google_compute_subnetwork.subnet.id
+    subnetwork = google_compute_subnetwork.subnet2.id
 
     # Assigne une IP externe (éphémère)
     access_config {}

@@ -9,6 +9,12 @@ variable "region" {
   default     = "europe-west1"
 }
 
+variable "region2" {
+  description = "Deuxième région GCP (ex : southamerica-east1)"
+  type        = string
+  default     = "southamerica-east1"
+}
+
 variable "zone" {
   description = "Zone GCP (ex : europe-west1-b)"
   type        = string
