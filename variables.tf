@@ -42,7 +42,7 @@ variable "instance_name2" {
 variable "machine_type" {
   description = "Type de machine (ex : e2-medium)"
   type        = string
-  default     = "e2-medium"
+  default     = "e2-micro"
 }
 
 variable "image_project" {
