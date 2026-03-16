@@ -1,5 +1,7 @@
 - hosts: web2
   become: yes
+  vars_files:
+    - vars.yml
 
   tasks:
     - name: Mettre à jour apt
@@ -21,3 +23,57 @@
       copy:
         content: "<h1>Deployed with Terraform + Ansible on region Latam- VM2</h1>"
         dest: /var/www/html/index.html
+
+    # ============================================
+    # ☁️ Installation et configuration Cloudflared
+    # ============================================
+
+    - name: Ajouter la clé GPG de Cloudflare
+      apt_key:
+        url: https://pkg.cloudflare.com/cloudflared-ascii.gpg
+        state: present
+
+    - name: Ajouter le repository Cloudflared
+      apt_repository:
+        repo: "deb [arch=amd64] https://pkg.cloudflare.com/cloudflared debian main"
+        state: present
+        filename: cloudflared
+
+    - name: Installer cloudflared
+      apt:
+        name: cloudflared
+        state: present
+        update_cache: yes
+
+    - name: Créer le répertoire de configuration cloudflared
+      file:
+        path: /etc/cloudflared
+        state: directory
+        mode: "0755"
+
+    - name: Configurer le tunnel cloudflared
+      copy:
+        dest: /etc/cloudflared/config.yml
+        content: |
+          tunnel: {{ cloudflared_tunnel_id2 }}
+          credentials-file: /etc/cloudflared/{{ cloudflared_tunnel_id2 }}.json
+          ingress:
+            - hostname: {{ cloudflared_hostname2 }}
+              service: http://localhost:80
+            - service: http_status:404
+
+    - name: Créer le fichier credentials cloudflared
+      copy:
+        dest: /etc/cloudflared/{{ cloudflared_tunnel_id2 }}.json
+        content: "{{ cloudflared_credentials2 | to_json }}"
+
+    - name: Installer le service cloudflared
+      command: cloudflared service install
+      args:
+        creates: /etc/systemd/system/cloudflared.service
+
+    - name: Démarrer et activer cloudflared
+      service:
+        name: cloudflared
+        state: started
+        enabled: yes
