@@ -1,4 +1,4 @@
-- hosts: web
+- hosts: web2
   become: yes
 
   tasks:
@@ -17,7 +17,7 @@
         state: started
         enabled: yes
 
-    - name: Page personnalisée
+    - name: Page personnalisée pour VM2
       copy:
-        content: "<h1>Deployed with Terraform + Ansible on region Europe</h1>"
+        content: "<h1>Deployed with Terraform + Ansible on region Latam- VM2</h1>"
         dest: /var/www/html/index.html

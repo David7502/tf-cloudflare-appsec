@@ -15,10 +15,22 @@ variable "zone" {
   default     = "europe-west1-b"
 }
 
+variable "zone2" {
+  description = "Deuxième zone GCP pour la VM2 (ex : europe-west1-c)"
+  type        = string
+  default     = "southamerica-east1-a"
+}
+
 variable "instance_name" {
   description = "Nom de la VM"
   type        = string
   default     = "my-vm-terraform"
+}
+
+variable "instance_name2" {
+  description = "Nom de la deuxième VM"
+  type        = string
+  default     = "my-vm-terraform-2"
 }
 
 variable "machine_type" {

@@ -57,3 +57,35 @@ resource "google_compute_instance" "vm" {
     ssh-keys = "${var.ssh_username}:${var.ssh_public_key}"
   }
 }
+
+resource "google_compute_instance" "vm2" {
+  name         = var.instance_name2
+  machine_type = var.machine_type
+  zone         = var.zone2
+
+  tags = ["ssh-enabled"]
+
+  # Disque d'amorcage (boot disk)
+  boot_disk {
+    initialize_params {
+      image   = "projects/${var.image_project}/global/images/family/${var.image_family}"
+      size    = 20  # taille en Go
+      type    = "pd-standard"
+    }
+    auto_delete = true
+  }
+
+  # Interface réseau avec IP externe
+  network_interface {
+    network    = google_compute_network.vpc.id
+    subnetwork = google_compute_subnetwork.subnet.id
+
+    # Assigne une IP externe (éphémère)
+    access_config {}
+  }
+
+  # Métadonnées : clé SSH pour l'accès
+  metadata = {
+    ssh-keys = "${var.ssh_username}:${var.ssh_public_key}"
+  }
+}
