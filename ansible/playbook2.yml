@@ -1,9 +1,10 @@
 - hosts: web2
   become: yes
-  vars_files:
-    - vars.yml
 
   tasks:
+    - name: Inclure les variables locales
+      include_vars: vars.local.yml
+
     - name: Mettre à jour apt
       apt:
         update_cache: yes
@@ -32,7 +33,7 @@
       file:
         path: /usr/share/keyrings
         state: directory
-        mode: '0755'
+        mode: "0755"
 
     - name: Ajouter la clé GPG de Cloudflare
       shell: curl -fsSL https://pkg.cloudflare.com/cloudflare-public-v2.gpg | tee /usr/share/keyrings/cloudflare-public-v2.gpg >/dev/null
@@ -42,9 +43,9 @@
     - name: Ajouter le repository Cloudflared
       lineinfile:
         path: /etc/apt/sources.list.d/cloudflared.list
-        line: 'deb [signed-by=/usr/share/keyrings/cloudflare-public-v2.gpg] https://pkg.cloudflare.com/cloudflared any main'
+        line: "deb [signed-by=/usr/share/keyrings/cloudflare-public-v2.gpg] https://pkg.cloudflare.com/cloudflared any main"
         create: true
-        mode: '0644'
+        mode: "0644"
 
     - name: Installer cloudflared
       apt:

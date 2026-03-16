@@ -1,6 +1,0 @@
-# Variables pour Cloudflared
-# Ce fichier est commité - il référence le fichier local avec les vraies valeurs
-# Copiez vars.local.yml.example vers vars.local.yml et remplissez vos vraies valeurs
-
-# Inclusion du fichier local (non commité)
-- include_vars: vars.local.yml
