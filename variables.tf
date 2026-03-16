@@ -10,9 +10,9 @@ variable "region" {
 }
 
 variable "region2" {
-  description = "Deuxième région GCP (ex : southamerica-east1)"
+  description = "Deuxième région GCP (ex : us-central1)"
   type        = string
-  default     = "southamerica-east1"
+  default     = "us-central1"
 }
 
 variable "zone" {
@@ -22,9 +22,9 @@ variable "zone" {
 }
 
 variable "zone2" {
-  description = "Deuxième zone GCP pour la VM2 (ex : europe-west1-c)"
+  description = "Deuxième zone GCP pour la VM2 (ex : us-central1-a)"
   type        = string
-  default     = "southamerica-east1-a"
+  default     = "us-central1-a"
 }
 
 variable "instance_name" {
@@ -42,7 +42,7 @@ variable "instance_name2" {
 variable "machine_type" {
   description = "Type de machine (ex : e2-medium)"
   type        = string
-  default     = "e2-micro"
+  default     = "e2-medium"
 }
 
 variable "image_project" {
