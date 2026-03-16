@@ -30,7 +30,7 @@
 
     - name: Ajouter la clé GPG de Cloudflare
       apt_key:
-        url: https://pkg.cloudflare.com/cloudflared-ascii.gpg
+        url: https://pkg.cloudflare.com/cloudflared/gpg
         state: present
 
     - name: Ajouter le repository Cloudflared
