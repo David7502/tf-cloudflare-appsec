@@ -20,7 +20,6 @@ terraform.tfvars
 !terraform.tfvars.example
 
 # Ansible sensitive variables
-ansible/vars.yml
 ansible/vars.local.yml
 
 # IDE
