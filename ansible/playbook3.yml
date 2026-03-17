@@ -94,3 +94,16 @@
           - "80:80"
         volumes:
           - /opt/nginx-scroll/index.html:/usr/share/nginx/html/index.html:ro
+
+    # ============================================
+    # 🧃 Déployer le container Juice Shop
+    # ============================================
+
+    - name: Lancer le container Juice Shop
+      community.docker.docker_container:
+        name: juice-shop
+        image: bkimminich/juice-shop
+        state: started
+        restart_policy: always
+        ports:
+          - "3000:3000"

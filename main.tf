@@ -19,7 +19,7 @@ resource "google_compute_firewall" "allow_ssh" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22", "80", "443", "8080"]
+    ports    = ["22", "80", "443", "3000", "8080"]
   }
 
   source_ranges = ["0.0.0.0/0"]
