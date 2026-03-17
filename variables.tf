@@ -1,42 +1,10 @@
+# ============================================
+# 🌐 Variables Globales / Partagées
+# ============================================
+
 variable "project_id" {
   description = "ID du projet GCP"
   type        = string
-}
-
-variable "region" {
-  description = "Région GCP (ex : europe-west1)"
-  type        = string
-  default     = "europe-west1"
-}
-
-variable "region2" {
-  description = "Deuxième région GCP (ex : us-central1)"
-  type        = string
-  default     = "us-central1"
-}
-
-variable "zone" {
-  description = "Zone GCP (ex : europe-west1-b)"
-  type        = string
-  default     = "europe-west1-b"
-}
-
-variable "zone2" {
-  description = "Deuxième zone GCP pour la VM2 (ex : us-central1-a)"
-  type        = string
-  default     = "us-central1-a"
-}
-
-variable "instance_name" {
-  description = "Nom de la VM"
-  type        = string
-  default     = "my-vm-terraform"
-}
-
-variable "instance_name2" {
-  description = "Nom de la deuxième VM"
-  type        = string
-  default     = "my-vm-terraform-2"
 }
 
 variable "machine_type" {
@@ -66,4 +34,70 @@ variable "ssh_username" {
 variable "ssh_public_key" {
   description = "Clé publique SSH pour l'accès à la VM"
   type        = string
+}
+
+# ============================================
+# 🖥️ VM1 - Region 1 (europe-west1)
+# ============================================
+
+variable "region" {
+  description = "Région GCP (ex : europe-west1)"
+  type        = string
+  default     = "europe-west1"
+}
+
+variable "zone" {
+  description = "Zone GCP (ex : europe-west1-b)"
+  type        = string
+  default     = "europe-west1-b"
+}
+
+variable "instance_name" {
+  description = "Nom de la VM"
+  type        = string
+  default     = "my-vm-terraform"
+}
+
+# ============================================
+# 🖥️ VM2 - Region 2 (us-central1)
+# ============================================
+
+variable "region2" {
+  description = "Deuxième région GCP (ex : us-central1)"
+  type        = string
+  default     = "us-central1"
+}
+
+variable "zone2" {
+  description = "Deuxième zone GCP pour la VM2 (ex : us-central1-a)"
+  type        = string
+  default     = "us-central1-a"
+}
+
+variable "instance_name2" {
+  description = "Nom de la deuxième VM"
+  type        = string
+  default     = "my-vm-terraform-2"
+}
+
+# ============================================
+# 🖥️ VM3 - Region 3 (europe-west9 - Paris)
+# ============================================
+
+variable "region3" {
+  description = "Troisième région GCP (ex : europe-west9)"
+  type        = string
+  default     = "europe-west9"
+}
+
+variable "zone3" {
+  description = "Troisième zone GCP pour la VM3 (ex : europe-west9-a)"
+  type        = string
+  default     = "europe-west9-a"
+}
+
+variable "instance_name3" {
+  description = "Nom de la troisième VM"
+  type        = string
+  default     = "my-vm-terraform-3"
 }
