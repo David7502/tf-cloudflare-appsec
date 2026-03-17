@@ -147,3 +147,30 @@
         restart_policy: always
         ports:
           - "8888:8888"
+
+    # ============================================
+    # 📡 Déployer le container JSON Server
+    # ============================================
+
+    - name: Créer le répertoire pour json-server
+      file:
+        path: /opt/json-server
+        state: directory
+        mode: "0755"
+
+    - name: Copier le fichier db.json
+      copy:
+        src: files/db.json
+        dest: /opt/json-server/db.json
+        mode: "0644"
+
+    - name: Lancer le container json-server
+      community.docker.docker_container:
+        name: json-server
+        image: vimagick/json-server
+        state: started
+        restart_policy: always
+        ports:
+          - "3001:3000"
+        volumes:
+          - /opt/json-server/db.json:/data/db.json:ro
