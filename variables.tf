@@ -81,19 +81,19 @@ variable "instance_name2" {
 }
 
 # ============================================
-# 🖥️ VM3 - Region 3 (europe-west9 - Paris)
+# 🖥️ VM3 - Region 3 (europe-west1)
 # ============================================
 
 variable "region3" {
-  description = "Troisième région GCP (ex : europe-west9)"
+  description = "Troisième région GCP (ex : europe-west1)"
   type        = string
-  default     = "europe-west9"
+  default     = "europe-west1"
 }
 
 variable "zone3" {
-  description = "Troisième zone GCP pour la VM3 (ex : europe-west9-a)"
+  description = "Troisième zone GCP pour la VM3 (ex : europe-west1-b)"
   type        = string
-  default     = "europe-west9-a"
+  default     = "europe-west1-b"
 }
 
 variable "instance_name3" {

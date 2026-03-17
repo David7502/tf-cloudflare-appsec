@@ -113,7 +113,7 @@ resource "google_compute_instance" "vm2" {
 }
 
 # ============================================
-# 🖥️ VM3 - Region 3 (europe-west9 - Paris)
+# 🖥️ VM3 - Region 3 (europe-west1)
 # ============================================
 
 resource "google_compute_subnetwork" "subnet3" {
