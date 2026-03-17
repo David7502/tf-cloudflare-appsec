@@ -107,3 +107,43 @@
         restart_policy: always
         ports:
           - "3000:3000"
+
+    # ============================================
+    # 🔓 Déployer le container DVWA
+    # ============================================
+
+    - name: Lancer le container DVWA
+      community.docker.docker_container:
+        name: dvwa
+        image: vulnerables/web-dvwa
+        state: started
+        restart_policy: always
+        ports:
+          - "4280:80"
+
+    # ============================================
+    # 🐐 Déployer le container WebGoat
+    # ============================================
+
+    - name: Lancer le container WebGoat
+      community.docker.docker_container:
+        name: webgoat
+        image: webgoat/webgoat
+        state: started
+        restart_policy: always
+        ports:
+          - "8081:8080"
+          - "9090:9090"
+
+    # ============================================
+    # 🚗 Déployer le container crAPI
+    # ============================================
+
+    - name: Lancer le container crAPI
+      community.docker.docker_container:
+        name: crapi
+        image: crapi/crapi
+        state: started
+        restart_policy: always
+        ports:
+          - "8888:8888"
