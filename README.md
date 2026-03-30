@@ -1,119 +1,119 @@
-# Terraform AppSec - Google Cloud
+# Lab AppSec - Terraform + Ansible
 
-Configuration Terraform pour déployer une infrastructure AppSec (Application Security) sur Google Cloud Platform.
+Infrastructure de lab AppSec (Application Security) sur Google Cloud Platform avec déploiement automatisé via Terraform et Ansible.
 
-## 📋 Prérequis
+## Architecture
+
+Une VM Docker en **europe-west1** hébergeant plusieurs applications vulnérables pour tests de sécurité :
+
+| Application | Port | Description |
+|-------------|------|-------------|
+| **httpbin** | 8080 | API de test HTTP |
+| **nginx** | 80 | Serveur web simple |
+| **Juice Shop** | 3000 | App vulnérable OWASP (e-commerce) |
+| **DVWA** | 4280 | Damn Vulnerable Web App |
+| **WebGoat** | 8081, 9090 | Plateforme d'apprentissage sécurité OWASP |
+| **crAPI** | 8888 | API vulnérable (sécurité API) |
+| **json-server** | 3001 | Fake REST API |
+
+## Prérequis
 
 - [Terraform](https://www.terraform.io/downloads.html) >= 1.0
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) >= 2.9
 - Compte Google Cloud Platform (GCP)
-- Clé de service GCP configurée
-- [Google Cloud CLI](https://cloud.google.com/sdk/docs/install) (optionnel mais recommandé)
+- Clé SSH configurée
 
-## 🔧 Installation
+## Déploiement
 
-### 1. Cloner le repository
-
-```bash
-git clone <your-repo-url>
-cd terraform-appsec
-```
-
-### 2. Configurer les credentials Google Cloud
+### 1. Configuration Terraform
 
 ```bash
-# Exporter la clé de service
-export GOOGLE_APPLICATION_CREDENTIALS="/chemin/vers/your-service-account-key.json"
-```
+# Cloner le repo
+git clone https://github.com/David7502/tf-cloudflare-appsec.git
+cd tf-cloudflare-appsec
 
-Ou créez un fichier `terraform.tfvars` en réutilisant le template :
+# Configurer les credentials GCP
+export GOOGLE_APPLICATION_CREDENTIALS="/chemin/vers/service-account.json"
 
-```bash
+# Créer le fichier de variables
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-Éditez `terraform.tfvars` avec vos valeurs :
+Éditer `terraform.tfvars` :
 
 ```hcl
-project_id = "your-gcp-project-id"
-region     = "europe-west1"
-# Ajouter d'autres variables selon votre configuration
+project_id     = "votre-projet-gcp"
+ssh_public_key = "ssh-ed25519 AAAA... user@host"
 ```
 
-### 3. Initialiser Terraform
-
 ```bash
+# Déployer l'infrastructure
 terraform init
-```
-
-## 📖 Utilisation
-
-### Valider la configuration
-
-```bash
-terraform validate
-```
-
-### Afficher le plan d'exécution
-
-```bash
 terraform plan
-```
-
-### Appliquer la configuration
-
-```bash
 terraform apply
 ```
 
-### Destructurer l'infrastructure
+### 2. Configuration Ansible
 
 ```bash
-terraform destroy
+cd ansible
+
+# Mettre à jour l'inventaire avec l'IP de la VM
+# Remplacer IP_DE_VM par l'IP externe de la VM créée
+nano inventory.ini
 ```
-
-## 📁 Structure du projet
-
-- `main.tf` - Configuration principale des ressources
-- `variables.tf` - Déclaration des variables
-- `terraform.tfvars` - Valeurs des variables (à créer localement)
-- `terraform.tfvars.example` - Template des variables
-- `outputs.tf` - Valeurs en sortie
-- `provider.tf` - Configuration du provider Google Cloud
-
-## 🔐 Sécurité
-
-**Important** : Ne jamais commiter les fichiers sensibles suivants :
-
-- `terraform.tfvars` (contient vos secrets)
-- Clés de service GCP (`*.json`)
-- État Terraform (`*.tfstate`)
-
-Consultez `.gitignore` pour la liste complète.
-
-## 🚀 Déploiement
-
-1. Vérifiez votre plan : `terraform plan`
-2. Appliquez les changements : `terraform apply`
-3. Consultez les outputs : `terraform output`
-
-## 📊 Outputs
-
-Les ressources créées sont disponibles via :
 
 ```bash
-terraform output
+# Déployer les containers Docker
+ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Consultez `outputs.tf` pour les valeurs exportées.
+## Structure du projet
 
-## 🤝 Contribution
+```
+.
+├── main.tf              # Infrastructure GCP (VPC, firewall, VM)
+├── variables.tf         # Variables Terraform
+├── provider.tf          # Provider Google Cloud
+├── outputs.tf           # Outputs Terraform
+├── terraform.tfvars     # Valeurs des variables (non commité)
+└── ansible/
+    ├── inventory.ini    # Inventaire des hôtes
+    ├── playbook.yml     # Playbook Docker + containers
+    └── files/
+        └── db.json      # Données pour json-server
+```
 
-Les modifications doivent être testées en local avant le commit.
+## Sécurité
 
-## 📝 License
+**Fichiers sensibles** (non commités) :
 
-À définir
+- `terraform.tfvars` - Variables Terraform
+- `ansible/vars.local.yml` - Variables Ansible sensibles
+- `*.tfstate` - État Terraform
+- `*.json` - Clés de service GCP
 
-## 📧 Support
+## Commandes utiles
 
-Pour toute question, veuillez ouvrir une issue.
+```bash
+# Terraform
+terraform plan          # Prévisualiser les changements
+terraform apply         # Appliquer les changements
+terraform destroy       # Supprimer l'infrastructure
+terraform output        # Afficher les outputs
+
+# Ansible
+ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
+```
+
+## Accès aux applications
+
+Une fois déployé, les applications sont accessibles via l'IP externe de la VM :
+
+- `http://<IP>:80` - nginx
+- `http://<IP>:3000` - Juice Shop
+- `http://<IP>:4280` - DVWA
+- `http://<IP>:8080` - httpbin
+- `http://<IP>:8081` - WebGoat
+- `http://<IP>:8888` - crAPI
+- `http://<IP>:3001` - json-server
