@@ -117,3 +117,23 @@ Une fois déployé, les applications sont accessibles via l'IP externe de la VM 
 - `http://<IP>:8081` - WebGoat
 - `http://<IP>:8888` - crAPI
 - `http://<IP>:3001` - json-server
+
+## Dépannage
+
+### Erreur SSH "REMOTE HOST IDENTIFICATION HAS CHANGED"
+
+Si vous recréez la VM avec la même IP, SSH refusera la connexion car la clé de l'hôte a changé :
+
+```
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+```
+
+**Solution** : Supprimer l'ancienne entrée du fichier `known_hosts` :
+
+```bash
+ssh-keygen -f ~/.ssh/known_hosts -R "<IP_DE_LA_VM>"
+```
+
+Puis relancez le playbook Ansible.
