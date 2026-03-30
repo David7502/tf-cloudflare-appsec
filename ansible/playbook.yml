@@ -69,7 +69,7 @@
           - "8080:80"
 
     # ============================================
-    # 🐳 Déployer le container nginx (scroll.dgcf.ovh)
+    # 🐳 Déployer le container nginx (www.dgcf.ovh)
     # ============================================
 
     - name: Créer le répertoire pour le site web
