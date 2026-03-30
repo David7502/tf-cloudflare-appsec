@@ -136,20 +136,7 @@
           - "9090:9090"
 
     # ============================================
-    # 🚗 Déployer le container crAPI
-    # ============================================
-
-    - name: Lancer le container crAPI
-      community.docker.docker_container:
-        name: crapi
-        image: crapi/crapi
-        state: started
-        restart_policy: always
-        ports:
-          - "8888:8888"
-
-    # ============================================
-    # 📡 Déployer le container JSON Server
+    # Déployer le container JSON Server
     # ============================================
 
     - name: Créer le répertoire pour json-server

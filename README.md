@@ -13,7 +13,6 @@ Une VM Docker en **europe-west1** hébergeant plusieurs applications vulnérable
 | **Juice Shop** | 3000 | App vulnérable OWASP (e-commerce) |
 | **DVWA** | 4280 | Damn Vulnerable Web App |
 | **WebGoat** | 8081, 9090 | Plateforme d'apprentissage sécurité OWASP |
-| **crAPI** | 8888 | API vulnérable (sécurité API) |
 | **json-server** | 3001 | Fake REST API |
 
 ## Prérequis
@@ -115,7 +114,6 @@ Une fois déployé, les applications sont accessibles via l'IP externe de la VM 
 - `http://<IP>:4280` - DVWA
 - `http://<IP>:8080` - httpbin
 - `http://<IP>:8081` - WebGoat
-- `http://<IP>:8888` - crAPI
 - `http://<IP>:3001` - json-server
 
 ## Dépannage
