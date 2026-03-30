@@ -9,7 +9,7 @@ Une VM Docker en **europe-west1** hébergeant plusieurs applications vulnérable
 | Application | Port | Description |
 |-------------|------|-------------|
 | **httpbin** | 8080 | API de test HTTP |
-| **nginx** | 80 | Serveur web simple |
+| **Site web** | 80 | Dashboard avec liens vers les apps |
 | **Juice Shop** | 3000 | App vulnérable OWASP (e-commerce) |
 | **DVWA** | 4280 | Damn Vulnerable Web App |
 | **WebGoat** | 8081, 9090 | Plateforme d'apprentissage sécurité OWASP |
@@ -109,7 +109,7 @@ ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
 
 Une fois déployé, les applications sont accessibles via l'IP externe de la VM :
 
-- `http://<IP>:80` - nginx
+- `http://<IP>:80` - Dashboard (page d'accueil)
 - `http://<IP>:3000` - Juice Shop
 - `http://<IP>:4280` - DVWA
 - `http://<IP>:8080` - httpbin

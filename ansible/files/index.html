@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab AppSec</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8b8b9e;
+            font-weight: 300;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .app-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(124, 58, 237, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .app-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .app-card p {
+            font-size: 0.9rem;
+            color: #8b8b9e;
+            line-height: 1.5;
+        }
+
+        .app-card .port {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(124, 58, 237, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #a78bfa;
+            font-weight: 500;
+        }
+
+        .icon-juice { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .icon-dvwa { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .icon-webgoat { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .icon-httpbin { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .icon-json { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: #6b6b7e;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            header {
+                padding: 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">Lab AppSec</h1>
+            <p class="subtitle">Environnement de test pour la sécurité applicative</p>
+        </header>
+
+        <main class="apps-grid">
+            <a href="//:3000" class="app-card" onclick="this.href='http://'+location.hostname+':3000'">
+                <div class="app-icon icon-juice">🧃</div>
+                <h3>OWASP Juice Shop</h3>
+                <p>Application e-commerce vulnérable pour l'apprentissage de la sécurité web.</p>
+                <span class="port">Port 3000</span>
+            </a>
+
+            <a href="//:4280" class="app-card" onclick="this.href='http://'+location.hostname+':4280'">
+                <div class="app-icon icon-dvwa">🔓</div>
+                <h3>DVWA</h3>
+                <p>Damn Vulnerable Web Application - Testez vos compétences en pentest.</p>
+                <span class="port">Port 4280</span>
+            </a>
+
+            <a href="//:8081" class="app-card" onclick="this.href='http://'+location.hostname+':8081/WebGoat'">
+                <div class="app-icon icon-webgoat">🐐</div>
+                <h3>WebGoat</h3>
+                <p>Plateforme d'apprentissage OWASP pour la sécurité des applications.</p>
+                <span class="port">Port 8081</span>
+            </a>
+
+            <a href="//:8080" class="app-card" onclick="this.href='http://'+location.hostname+':8080'">
+                <div class="app-icon icon-httpbin">🌐</div>
+                <h3>httpbin</h3>
+                <p>Service HTTP pour tester et débugger les requêtes HTTP/HTTPS.</p>
+                <span class="port">Port 8080</span>
+            </a>
+
+            <a href="//:3001" class="app-card" onclick="this.href='http://'+location.hostname+':3001'">
+                <div class="app-icon icon-json">📡</div>
+                <h3>JSON Server</h3>
+                <p>Fake REST API pour prototypage et tests d'intégration.</p>
+                <span class="port">Port 3001</span>
+            </a>
+        </main>
+
+        <footer>
+            <p>Déployé avec <a href="https://github.com/David7502/tf-cloudflare-appsec">Terraform + Ansible</a></p>
+        </footer>
+    </div>
+</body>
+</html>

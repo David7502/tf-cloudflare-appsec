@@ -72,28 +72,28 @@
     # 🐳 Déployer le container nginx (scroll.dgcf.ovh)
     # ============================================
 
-    - name: Créer le répertoire pour la page nginx
+    - name: Créer le répertoire pour le site web
       file:
-        path: /opt/nginx-scroll
+        path: /opt/website
         state: directory
         mode: "0755"
 
-    - name: Créer la page HTML personnalisée
+    - name: Copier le site web
       copy:
-        content: "<h1>Réponse de la VM3</h1>"
-        dest: /opt/nginx-scroll/index.html
+        src: files/index.html
+        dest: /opt/website/index.html
         mode: "0644"
 
     - name: Lancer le container nginx
       community.docker.docker_container:
-        name: nginx-scroll
+        name: nginx-website
         image: nginx:latest
         state: started
         restart_policy: always
         ports:
           - "80:80"
         volumes:
-          - /opt/nginx-scroll/index.html:/usr/share/nginx/html/index.html:ro
+          - /opt/website:/usr/share/nginx/html:ro
 
     # ============================================
     # 🧃 Déployer le container Juice Shop
