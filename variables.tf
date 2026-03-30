@@ -37,7 +37,7 @@ variable "ssh_public_key" {
 }
 
 # ============================================
-# 🖥️ VM1 - Region 1 (europe-west1)
+# 🖥️ VM Docker - Region europe-west1
 # ============================================
 
 variable "region" {
@@ -53,51 +53,7 @@ variable "zone" {
 }
 
 variable "instance_name" {
-  description = "Nom de la VM"
+  description = "Nom de la VM Docker"
   type        = string
-  default     = "my-vm-terraform"
-}
-
-# ============================================
-# 🖥️ VM2 - Region 2 (us-central1)
-# ============================================
-
-variable "region2" {
-  description = "Deuxième région GCP (ex : us-central1)"
-  type        = string
-  default     = "us-central1"
-}
-
-variable "zone2" {
-  description = "Deuxième zone GCP pour la VM2 (ex : us-central1-a)"
-  type        = string
-  default     = "us-central1-a"
-}
-
-variable "instance_name2" {
-  description = "Nom de la deuxième VM"
-  type        = string
-  default     = "my-vm-terraform-2"
-}
-
-# ============================================
-# 🖥️ VM3 - Region 3 (europe-west1)
-# ============================================
-
-variable "region3" {
-  description = "Troisième région GCP (ex : europe-west1)"
-  type        = string
-  default     = "europe-west1"
-}
-
-variable "zone3" {
-  description = "Troisième zone GCP pour la VM3 (ex : europe-west1-b)"
-  type        = string
-  default     = "europe-west1-b"
-}
-
-variable "instance_name3" {
-  description = "Nom de la troisième VM"
-  type        = string
-  default     = "my-vm-terraform-3"
+  default     = "vm-docker-appsec"
 }

@@ -1,87 +1,176 @@
-- hosts: web
+- hosts: docker
   become: yes
 
   tasks:
-    - name: Inclure les variables locales
-      include_vars: vars.local.yml
-
     - name: Mettre à jour apt
       apt:
         update_cache: yes
 
-    - name: Installer nginx
+    - name: Installer les dépendances Docker
       apt:
-        name: nginx
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
         state: present
-
-    - name: Démarrer nginx
-      service:
-        name: nginx
-        state: started
-        enabled: yes
-
-    - name: Page personnalisée
-      copy:
-        content: "<h1>Deployed with Terraform + Ansible on region Europe</h1>"
-        dest: /var/www/html/index.html
-
-    # ============================================
-    # ☁️ Installation et configuration Cloudflared
-    # ============================================
 
     - name: Créer le répertoire keyrings
       file:
-        path: /usr/share/keyrings
+        path: /etc/apt/keyrings
         state: directory
         mode: "0755"
 
-    - name: Ajouter la clé GPG de Cloudflare
-      shell: curl -fsSL https://pkg.cloudflare.com/cloudflare-public-v2.gpg | tee /usr/share/keyrings/cloudflare-public-v2.gpg >/dev/null
+    - name: Ajouter la clé GPG Docker
+      shell: curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
       args:
-        creates: /usr/share/keyrings/cloudflare-public-v2.gpg
+        creates: /etc/apt/keyrings/docker.gpg
 
-    - name: Ajouter le repository Cloudflared
-      lineinfile:
-        path: /etc/apt/sources.list.d/cloudflared.list
-        line: "deb [signed-by=/usr/share/keyrings/cloudflare-public-v2.gpg] https://pkg.cloudflare.com/cloudflared any main"
-        create: true
-        mode: "0644"
+    - name: Ajouter le repository Docker
+      shell: |
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+      args:
+        creates: /etc/apt/sources.list.d/docker.list
 
-    - name: Installer cloudflared
+    - name: Installer Docker
       apt:
-        name: cloudflared
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
         state: present
         update_cache: yes
 
-    - name: Créer le répertoire de configuration cloudflared
+    - name: Démarrer et activer Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Ajouter l'utilisateur au groupe docker
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    # ============================================
+    # 🐳 Déployer le container httpbin
+    # ============================================
+
+    - name: Lancer le container httpbin
+      community.docker.docker_container:
+        name: httpbin
+        image: kennethreitz/httpbin
+        state: started
+        restart_policy: always
+        ports:
+          - "8080:80"
+
+    # ============================================
+    # 🐳 Déployer le container nginx (scroll.dgcf.ovh)
+    # ============================================
+
+    - name: Créer le répertoire pour la page nginx
       file:
-        path: /etc/cloudflared
+        path: /opt/nginx-scroll
         state: directory
         mode: "0755"
 
-    - name: Configurer le tunnel cloudflared
+    - name: Créer la page HTML personnalisée
       copy:
-        dest: /etc/cloudflared/config.yml
-        content: |
-          tunnel: {{ cloudflared_tunnel_id }}
-          credentials-file: /etc/cloudflared/{{ cloudflared_tunnel_id }}.json
-          ingress:
-            - hostname: {{ cloudflared_hostname }}
-              service: http://localhost:80
-            - service: http_status:404
+        content: "<h1>Réponse de la VM3</h1>"
+        dest: /opt/nginx-scroll/index.html
+        mode: "0644"
 
-    - name: Créer le fichier credentials cloudflared
-      copy:
-        dest: /etc/cloudflared/{{ cloudflared_tunnel_id }}.json
-        content: "{{ cloudflared_credentials | to_json }}"
-
-    - name: Installer le service cloudflared
-      command: cloudflared service install
-      args:
-        creates: /etc/systemd/system/cloudflared.service
-
-    - name: Démarrer et activer cloudflared
-      service:
-        name: cloudflared
+    - name: Lancer le container nginx
+      community.docker.docker_container:
+        name: nginx-scroll
+        image: nginx:latest
         state: started
-        enabled: yes
+        restart_policy: always
+        ports:
+          - "80:80"
+        volumes:
+          - /opt/nginx-scroll/index.html:/usr/share/nginx/html/index.html:ro
+
+    # ============================================
+    # 🧃 Déployer le container Juice Shop
+    # ============================================
+
+    - name: Lancer le container Juice Shop
+      community.docker.docker_container:
+        name: juice-shop
+        image: bkimminich/juice-shop
+        state: started
+        restart_policy: always
+        ports:
+          - "3000:3000"
+
+    # ============================================
+    # 🔓 Déployer le container DVWA
+    # ============================================
+
+    - name: Lancer le container DVWA
+      community.docker.docker_container:
+        name: dvwa
+        image: vulnerables/web-dvwa
+        state: started
+        restart_policy: always
+        ports:
+          - "4280:80"
+
+    # ============================================
+    # 🐐 Déployer le container WebGoat
+    # ============================================
+
+    - name: Lancer le container WebGoat
+      community.docker.docker_container:
+        name: webgoat
+        image: webgoat/webgoat
+        state: started
+        restart_policy: always
+        ports:
+          - "8081:8080"
+          - "9090:9090"
+
+    # ============================================
+    # 🚗 Déployer le container crAPI
+    # ============================================
+
+    - name: Lancer le container crAPI
+      community.docker.docker_container:
+        name: crapi
+        image: crapi/crapi
+        state: started
+        restart_policy: always
+        ports:
+          - "8888:8888"
+
+    # ============================================
+    # 📡 Déployer le container JSON Server
+    # ============================================
+
+    - name: Créer le répertoire pour json-server
+      file:
+        path: /opt/json-server
+        state: directory
+        mode: "0755"
+
+    - name: Copier le fichier db.json
+      copy:
+        src: files/db.json
+        dest: /opt/json-server/db.json
+        mode: "0644"
+
+    - name: Lancer le container json-server
+      community.docker.docker_container:
+        name: json-server
+        image: vimagick/json-server
+        state: started
+        restart_policy: always
+        ports:
+          - "3001:3000"
+        volumes:
+          - /opt/json-server/db.json:/data/db.json:ro
